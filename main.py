@@ -8,29 +8,14 @@ if not path.exists(RESULTS_FOLDER):
     mkdir(RESULTS_FOLDER)
 
 
-# the command that works:
-# bad encoding.  ffmpeg -i /media/basement/CameraArchive/20220630/C0016.MP4 -ss 00:00:20 -to 00:00:37  jordieGrimm_stefanDrillV2ToExtension.mp4
-# ffmpeg -i /media/basement/CameraArchive/20220630/C0016.MP4 -ss 00:00:20 -to 00:00:37  -crf 28 -c:v libx264  jordieGrimm_stefanDrillV2ToExtension.mp4
-
 def process_timestamp(timestamp):
     if type(timestamp) == float:
         return timestamp
     elif type(timestamp) == str and ':' in timestamp:
         s = timestamp.split(":")
-        if len(s) == 2:  # minutes:seconds.  Theoretically works with partial seconds?
-            return float(s[0]) + float(s[1])/60
-        elif len(s) == 3: # hours:minutes:seconds.
-            return float(s[0])*60 + float(s[1]) + float(s[2])/60
-
-
-def process_timestamp(timestamp):
-    if type(timestamp) == float:
-        return timestamp
-    elif type(timestamp) == str and ':' in timestamp:
-        s = timestamp.split(":")
-        if len(s) == 2:  # minutes:seconds.  Theoretically works with partial seconds?
+        if len(s) == 2:  # minutes:seconds.
             return float(s[0])*60 + float(s[1])
-        elif len(s) == 3: # hours:minutes:seconds.
+        elif len(s) == 3:  # hours:minutes:seconds.
             return float(s[0])*60*60 + float(s[1])*60 + float(s[2])
 
 

@@ -34,32 +34,13 @@ def process_timestamp(timestamp):
             return float(s[0])*60*60 + float(s[1])*60 + float(s[2])
 
 
-
-original_config = {
-    'output_filename': 'test.mp4',  # codec okay?  always force mp4, or just match codec of infiles.  IS SET TO CAMERA FOR NOW
-    'deets': [
-        ('C0004.MP4', 00.24, 00.28),                                          # 00:27.5
-        ('C0005.MP4', 1.12, 1.15),  # 1:16
-        ('C0006.MP4', 0.47, 0.51),
-        ('C0007.MP4', 0.23, 1.26),
-        # ('C0008.MP4', 2.04, 2.10),  # squat and give up
-        ('C0008.MP4', 2.58, 3.04),  # weak throw
-        ('C0009.MP4', 1.22, 1.25),
-        ('C0010.MP4', 2.27, 2.32),
-        ('C0012.MP4', 0.27, 0.32),
-        ('C0012.MP4', 1.26, 1.30),
-        ('C0012.MP4', 2.30, 2.35),  # dancing at 2:05
-        ],
-    'data_foldername': 'Data'
-
-}
-
 config = {
-    'output_filename': 'jordieGrimm_stefanDrillV2ToExtension.mp4',
+    'output_filename': '20221103_GrimmFrontTuck.mp4',
     'deets': [
-        ('C0016.MP4', '00:20', '00:37')
+        ('C0060.MP4', '0:52', '0:58'),
+        ('C0060.MP4', '0:53.485', '0:54.8', 0.125),
     ],
-    'data_foldername': '/media/basement/CameraArchive/20220630'
+    'data_foldername': '/media/allen/garage/Basement/CameraArchiveDB/20221108_RX100Dump/PRIVATE/M4ROOT/CLIP'
 }
 
 
@@ -84,12 +65,19 @@ def clip_vid(filename, start_time, end_time):
 def main():
 
     trimmed = []
-    for filename, start, end in files_to_clip:
+    for row in files_to_clip:
+        speed = None
+        if len(row) == 3:
+            filename, start, end = row
+        elif len(row) == 4:
+            filename, start, end, speed = row
 
         full_filename = path.join(DATA_FOLDER, filename)
         clipped = clip_vid(
             full_filename, start, end
         )
+        if speed is not None:
+            clipped = clipped.setpts(f'PTS/{speed}')
         trimmed.append(clipped)
 
     full_output_filename = path.join(RESULTS_FOLDER, output_filename)

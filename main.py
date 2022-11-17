@@ -71,11 +71,9 @@ def clip_vid(filename, start_time, end_time):
     processed_start = process_timestamp(start_time)
     processed_end = process_timestamp(end_time)
 
-    stream = ffmpeg.input(filename)
-    # trimmed = stream.trim(start_frame=start_frame, end_frame=end_frame) # frame
-    trimmed = stream.trim(start=processed_start, end=processed_end) # seconds
+    stream = ffmpeg.input(filename, ss=processed_start, to=processed_end)
 
-    return trimmed
+    return stream
 
 
 def main():

@@ -1,6 +1,11 @@
-from os import path
+from os import path, mkdir
 
 import ffmpeg
+
+
+RESULTS_FOLDER = 'out/'
+if not path.exists(RESULTS_FOLDER):
+    mkdir(RESULTS_FOLDER)
 
 
 # the command that works:
@@ -87,11 +92,10 @@ def main():
         )
         trimmed.append(clipped)
 
-
-    # trimmed[0].output(output_filename).overwrite_output().run()
-
-    ffmpeg.concat(*trimmed).output(output_filename).overwrite_output().run()
+    full_output_filename = path.join(RESULTS_FOLDER, output_filename)
+    ffmpeg.concat(*trimmed).output(full_output_filename, crf=28).run(overwrite_output=True)
     return True
+
 
 if __name__ == '__main__':
     main()

@@ -20,6 +20,16 @@ def process_timestamp(timestamp):
 
 
 config = {
+    'output_filename': '20221103_GrimmPikeFlip.mp4',
+    'deets': [
+        ('C0061.MP4', '1:15', '1:20'),
+        ('C0061.MP4', '2:10', '2:16'),
+    ],
+    'data_foldername': '/media/allen/garage/Basement/CameraArchiveDB/20221108_RX100Dump/PRIVATE/M4ROOT/CLIP'
+}
+
+
+config = {
     'output_filename': '20221103_GrimmFrontTuck.mp4',
     'deets': [
         ('C0060.MP4', '0:52', '0:58'),
@@ -62,6 +72,7 @@ def main():
             full_filename, start, end
         )
         if speed is not None:
+            # in case I also want audio: https://superuser.com/a/1072826/119690
             clipped = clipped.setpts(f'PTS/{speed}')
         trimmed.append(clipped)
 
